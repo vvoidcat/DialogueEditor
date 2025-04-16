@@ -1,0 +1,14 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+
+[*.cs]
+# Indentation
+indent_style = tab
+indent_size = 4
+
+# Namespace formatting
+csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_new_line_after_namespace_declaration = true

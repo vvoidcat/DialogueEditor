@@ -1,0 +1,106 @@
+﻿<common:DisposableUserControl x:Class="DialogueEditor.Views.EditorPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DialogueEditor.Views"
+             xmlns:common="clr-namespace:DialogueEditor.Views.CommonControls"
+             xmlns:converters="clr-namespace:DialogueEditor.Views.Converters"
+             xmlns:viewModels="clr-namespace:DialogueEditor.ViewModels"
+             xmlns:modelWrappers="clr-namespace:DialogueEditor.ViewModels.ModelWrappers"
+             x:Name="EditorPanelRoot"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="{DynamicResource AccentLightBrush}">
+
+    <common:DisposableUserControl.DataContext>
+        <viewModels:EditorPanelViewModel/>
+    </common:DisposableUserControl.DataContext>
+
+    <common:DisposableUserControl.Resources>
+        <converters:BoolToGridLengthConverter x:Key="BoolToGridLengthConverter" DefaultSize="200"/>
+        <converters:BoolToGridLengthConverter x:Key="BoolToGridLengthConverterForSplitters" DefaultSize="3"/>
+    </common:DisposableUserControl.Resources>
+
+    <TabControl Margin="0 5 0 0" Padding="0" 
+                BorderThickness="0"
+                BorderBrush="{DynamicResource BordersBrush}"
+                Background="{DynamicResource BackgroundSecondaryBrush}" 
+                ItemsSource="{Binding OpenDialogues}">
+
+        <TabControl.ItemContainerStyle>
+            <Style TargetType="TabItem" BasedOn="{StaticResource TabItemEditorStyle}">
+                <Setter Property="Header" Value="{Binding Name}"/>
+            </Style>
+        </TabControl.ItemContainerStyle>
+
+        <TabControl.ContentTemplate>
+            <DataTemplate>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        
+                        <RowDefinition 
+                            Height="{Binding ElementName=NodeSettingsToggleButton, Path=Height}"/>
+                        
+                        <RowDefinition 
+                            Height="{Binding ElementName=SplitterNodeSettings, Path=IsEnabled, 
+                                    Converter={StaticResource BoolToGridLengthConverterForSplitters}, 
+                                    ConverterParameter=SplitterSettings}"/>
+                        <RowDefinition 
+                            x:Name="SettingsRow" 
+                            Height="{Binding DataContext.IsVisibleNodeSettingsPanel, RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                    Mode=TwoWay, 
+                                    Converter={StaticResource BoolToGridLengthConverter}, 
+                                    ConverterParameter=SettingsRow}"/>
+                    </Grid.RowDefinitions>
+
+                    <TreeView 
+                        Grid.Row="0" 
+                        Padding="5 10"
+                        BorderBrush="{DynamicResource BordersBrush}"
+                        BorderThickness="0"
+                        Background="{DynamicResource BackgroundSecondaryBrush}" 
+                        ItemsSource="{Binding Nodes}">
+
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem" BasedOn="{StaticResource DialogueNodeItemStyle}">
+                                <Setter Property="IsSelected" Value="{Binding IsSelectedNode, Mode=TwoWay}"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+
+                    <common:ShowHideButtonControl x:Name="NodeSettingsToggleButton"
+                        Grid.Row="1" 
+                        Header="Node Settings"
+                        Command="{Binding DataContext.toggleHideNodeSettingsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                        Orientation="Horizontal" 
+                        Direction="Up"
+                        IsOpen="{Binding DataContext.IsVisibleNodeSettingsPanel, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+
+                    <common:TargetedGridSplitter 
+                        x:Name="SplitterNodeSettings"
+                        Grid.Row="2" 
+                        FirstTargetOrder="0" 
+                        SecondTargetOrder="3" 
+                        MinTargetSize="200" 
+                        Orientation="Horizontal"
+                        Style="{StaticResource TargetedGridSplitterStyle}"
+                        IsEnabled="{Binding DataContext.IsVisibleNodeSettingsPanel, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+
+                    <local:NodeSettingsPanel Grid.Row="3"/>
+
+                </Grid>
+                
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+        
+    </TabControl>
+</common:DisposableUserControl>

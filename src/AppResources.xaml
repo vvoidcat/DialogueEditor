@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <!-- Brushes -->
+        <ResourceDictionary Source="/Views/Resources/Brushes/Brushes.xaml"/>
+        <ResourceDictionary Source="/Views/Resources/Brushes/Colors.xaml"/>
+
+        <!-- Styles -->
+        <ResourceDictionary Source="/Views/Resources/Styles/ButtonStyle.xaml"/>
+        <ResourceDictionary Source="/Views/Resources/Styles/GroupBoxStyle.xaml"/>
+        <ResourceDictionary Source="/Views/Resources/Styles/ShowHideButtonStyle.xaml"/>
+        <ResourceDictionary Source="/Views/Resources/Styles/TabItemEditorStyle.xaml"/>
+        <ResourceDictionary Source="/Views/Resources/Styles/TargetedGridSplitterStyle.xaml"/>
+        <ResourceDictionary Source="/Views/Resources/Styles/TextBoxStyle.xaml"/>
+        <ResourceDictionary Source="/Views/Resources/Styles/TreeViewItemStyle.xaml"/>
+
+    </ResourceDictionary.MergedDictionaries>
+    
+</ResourceDictionary>

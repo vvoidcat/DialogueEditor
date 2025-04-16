@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="DialogueNodeItemStyle" TargetType="{x:Type TreeViewItem}">
+        <Setter Property="IsExpanded" Value="{Binding IsRoot, Mode=OneWay}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding DataContext.IsPlayer, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding DataContext.IsPlayer, RelativeSource={RelativeSource Self}}" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource TextAccentBrightBrush}"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding DataContext.IsRoot, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding DataContext.IsLink, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>
