@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DialogueEditor.Controllers.Common;
 
-namespace DialogueEditor.Core
+namespace DialogueEditor.Controllers
 {
-    public interface IConverter
+    class MainAreaViewModel
     {
     }
 }

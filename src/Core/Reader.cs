@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace DialogueEditor.Core
 {
-    public interface IConverter
+    class Reader : IReader
     {
+
+        // return key-value pairs
     }
 }

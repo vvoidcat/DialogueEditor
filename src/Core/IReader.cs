@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DialogueEditor.Core
 {
-    public interface IConverter
+    public interface IReader
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DialogueEditor.Core
 {
-    internal class JsonConverter
+    internal class JsonConverter : Converter
     {
     }
 }

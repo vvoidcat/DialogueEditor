@@ -8,5 +8,11 @@ namespace DialogueEditor.Core
 {
     internal class Converter : IConverter
     {
+        // processes single option
+        public R ProcessOption<T, R>(T option)
+        {
+            //placeholder
+            return Activator.CreateInstance<R>();
+        }
     }
 }
