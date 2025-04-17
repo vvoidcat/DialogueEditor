@@ -6,8 +6,13 @@ namespace DialogueEditor.Views.Common;
 
 public class TargetedGridSplitter : GridSplitter, IDisposable
 {
-    private Dictionary<int, GridLength> _lockedColumns = new();
+    //private List<ColumnDefinition> _lockedColumns = new();
+    //private Dictionary<int, (GridLength, GridUnitType)> _lockedColumns = new();
+    //private Dictionary<int, (GridLength, GridUnitType)> _workingColums = new();
     //private Dictionary<int, GridUnitType> _lockedColumns = new();
+
+    ColumnDefinition? col1;
+    ColumnDefinition? col2;
 
     public static readonly DependencyProperty FirstTargetColumnProperty =
         DependencyProperty.Register(
@@ -59,32 +64,16 @@ public class TargetedGridSplitter : GridSplitter, IDisposable
     {
         if (Parent is Grid grid)
         {
-            // Store original widths of NON-target columns
-            _lockedColumns = new();
-
-            for (int i = 0; i < grid.ColumnDefinitions.Count; i++)
-            {
-                if (i != FirstTargetColumn && i != SecondTargetColumn)
-                {
-                    _lockedColumns[i] = grid.ColumnDefinitions[i].Width;
-                }
-            }
+            col1 = grid.ColumnDefinitions[FirstTargetColumn];
+            col2 = grid.ColumnDefinitions[SecondTargetColumn];
         }
     }
 
     private void OnDragDelta(object sender, DragDeltaEventArgs e)
     {
-        if (Parent is not Grid grid || !_lockedColumns.Any())
+        if (col1 is null || col2 is null)
             return;
 
-        var columns = grid.ColumnDefinitions;
-
-        if (FirstTargetColumn < 0 || FirstTargetColumn >= columns.Count ||
-            SecondTargetColumn < 0 || SecondTargetColumn >= columns.Count)
-            return;
-
-        var col1 = columns[FirstTargetColumn];
-        var col2 = columns[SecondTargetColumn];
         double delta = e.HorizontalChange;
 
         // Calculate new widths
@@ -92,7 +81,6 @@ public class TargetedGridSplitter : GridSplitter, IDisposable
         double newWidthCol2 = col2.ActualWidth - delta;
 
         // Enforce minimum widths
-        //var minWidth = MinColumnWidth * 1.0;
 
         if (newWidthCol1 < MinColumnWidth)
         {
@@ -110,15 +98,16 @@ public class TargetedGridSplitter : GridSplitter, IDisposable
         col2.Width = new GridLength(newWidthCol2, GridUnitType.Pixel);
 
         // Lock other columns
-        foreach (var kvp in _lockedColumns)
-        {
-            columns[kvp.Key].Width = kvp.Value;
-        }
+        //foreach (var kvp in _lockedColumns)
+        //{
+        //    columns[kvp.Key].Width = kvp.Value.Item1;
+        //}
     }
 
     private void OnDragCompleted(object sender, DragCompletedEventArgs e)
     {
-        _lockedColumns.Clear(); // Clean up
+        //_lockedColumns.Clear(); // Clean up
+
     }
 
 
