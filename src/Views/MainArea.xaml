@@ -22,6 +22,27 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+                <TreeView 
+                    Grid.Row="0" 
+                    BorderBrush="#FFD7E3E9" 
+                    Background="#FFF0F0F0" 
+                    ItemsSource="{Binding nodes}">
+                    
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding DisplayName}"/>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+
+                    <TreeViewItem Header="ROOT" IsExpanded="True">
+                        <TreeViewItem Header="child1">
+                            <TreeViewItem Header="child11"></TreeViewItem>
+                        </TreeViewItem>
+                        <TreeViewItem Header="child2"></TreeViewItem>
+                        <TreeViewItem Header="child3"></TreeViewItem>
+                    </TreeViewItem>/>
+                </TreeView>
+
                 <Grid Grid.Row="1" Background="White">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>

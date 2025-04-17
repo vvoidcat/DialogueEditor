@@ -5,6 +5,8 @@ namespace DialogueEditor.Controllers
 {
     internal class MainWindowViewModel : ObservableObject
     {
+        public int MinResizeWidth { get; set; } = 200;
+
         private bool _isVisibleConfigsPanel;
         public bool isVisibleConfigsPanel
         {
