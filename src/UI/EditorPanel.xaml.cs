@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace DialogueEditor.Views
 {
     /// <summary>
-    /// Interaction logic for MainArea.xaml
+    /// Interaction logic for EditorPanel.xaml
     /// </summary>
-    public partial class MainArea : UserControl
+    public partial class EditorPanel : UserControl
     {
-        public MainArea()
+        public EditorPanel()
         {
             InitializeComponent();
         }

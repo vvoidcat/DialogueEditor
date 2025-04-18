@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DialogueEditor.Core
-{
-    class Reader : IReader
-    {
+namespace DialogueEditor.Core;
 
-        // return key-value pairs
-    }
+class Reader : IReader
+{
+
+    // return key-value pairs
 }

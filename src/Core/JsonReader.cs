@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DialogueEditor.Core
+namespace DialogueEditor.Core;
+
+class JsonReader : Reader
 {
-    class JsonReader : Reader
-    {
-    }
 }

@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Styles\" />
+    <Folder Include="UI\Converters\" />
+    <Folder Include="UI\Views\" />
+    <Folder Include="UI\Resources\Brushes\" />
   </ItemGroup>  
 
 </Project>

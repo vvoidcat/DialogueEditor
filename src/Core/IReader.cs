@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DialogueEditor.Core
+namespace DialogueEditor.Core;
+
+public interface IReader
 {
-    public interface IReader
-    {
-    }
 }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DialogueEditor.Views"
-             xmlns:common="clr-namespace:DialogueEditor.Views.Common"
+             xmlns:common="clr-namespace:DialogueEditor.UI.CommonControls"
              xmlns:controllers="clr-namespace:DialogueEditor.Controllers"
              x:Name="VariablesPanelRoot"
              mc:Ignorable="d" 

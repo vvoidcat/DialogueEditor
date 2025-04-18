@@ -1,11 +1,9 @@
 ﻿using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Automation;
 
-namespace DialogueEditor.Views.Common;
+namespace DialogueEditor.UI.CommonControls;
 
 public class TargetedGridSplitter : Thumb, IDisposable
 {
@@ -16,32 +14,40 @@ public class TargetedGridSplitter : Thumb, IDisposable
     private RowDefinition? _row2;
 
     public static readonly DependencyProperty OrientationProperty =
-        DependencyProperty.Register(
+        DependencyProperty.Register
+        (
             "Orientation",
             typeof(OrientationType),
             typeof(TargetedGridSplitter),
-            new PropertyMetadata(OrientationType.Vertical));
+            new PropertyMetadata(OrientationType.Vertical)
+        );
 
     public static readonly DependencyProperty FirstTargetOrderProperty =
-        DependencyProperty.Register(
+        DependencyProperty.Register
+        (
             "FirstTargetOrder",
             typeof(int),
             typeof(TargetedGridSplitter),
-            new PropertyMetadata(0));
+            new PropertyMetadata(0)
+        );
 
     public static readonly DependencyProperty SecondTargetOrderProperty =
-        DependencyProperty.Register(
+        DependencyProperty.Register
+        (
             "SecondTargetOrder",
             typeof(int),
             typeof(TargetedGridSplitter),
-            new PropertyMetadata(1));
+            new PropertyMetadata(1)
+        );
 
     public static readonly DependencyProperty MinTargetSizeProperty =
-        DependencyProperty.Register(
+        DependencyProperty.Register
+        (
             "MinTargetSize",
             typeof(int),
             typeof(TargetedGridSplitter),
-            new PropertyMetadata(0));
+            new PropertyMetadata(0)
+        );
 
     public OrientationType Orientation
     {
@@ -69,30 +75,6 @@ public class TargetedGridSplitter : Thumb, IDisposable
 
     public TargetedGridSplitter()
     {
-        // MOVE TO STYLES DICTIONARY
-        var borderFactory = new FrameworkElementFactory(typeof(Border));
-        borderFactory.SetValue(Border.BackgroundProperty, Brushes.WhiteSmoke);
-        borderFactory.SetValue(Border.BorderBrushProperty, Brushes.WhiteSmoke);
-        borderFactory.SetValue(Border.BorderThicknessProperty, new Thickness(0));
-
-        this.Template = new ControlTemplate(typeof(Thumb))
-        {
-            VisualTree = borderFactory
-        };
-
-
-        // ALSO MOVE TO STYLES
-        switch (Orientation)
-        {
-            case OrientationType.None:
-            case OrientationType.Vertical:
-                this.Cursor = Cursors.SizeWE;
-                break;
-            case OrientationType.Horizontal:
-                this.Cursor = Cursors.SizeNS;
-                break;
-        }
-
         this.DragStarted += OnDragStarted;
         this.DragDelta += OnDragDelta;
     }

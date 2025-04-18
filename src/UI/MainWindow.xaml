@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DialogueEditor.Views"
-        xmlns:common="clr-namespace:DialogueEditor.Views.Common"
+        xmlns:common="clr-namespace:DialogueEditor.UI.CommonControls"
         xmlns:controllers="clr-namespace:DialogueEditor.Controllers"
         mc:Ignorable="d"
         Title="DialogueEditor" MinHeight="500" MinWidth="1000">
@@ -94,7 +94,13 @@
                     </ColumnDefinition.Style>
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
-
+            
+            <!-- 
+            
+                COLUMNS 
+            
+            -->
+            
             <!-- PRESET CONFIGURATIONS -->
             <local:ConfigurationsPanel Grid.Column="0"/>
             <common:TargetedGridSplitter 
@@ -103,8 +109,9 @@
                 FirstTargetOrder="0" 
                 SecondTargetOrder="6" 
                 MinTargetSize="200" 
-                Orientation="Vertical"/>
-            <common:ShowHideButtonControl Grid.Column="2" Command="{Binding toggleHideConfigsCommand}"/>
+                Orientation="Vertical"
+                Style="{StaticResource TargetedGridSplitterStyle}"/>
+            <common:ShowHideButtonControl Grid.Column="2" Command="{Binding toggleHideConfigsCommand}" Orientation="Vertical" Direction="Right"/>
 
             <!-- GLOBAL VARIABLES -->
             <local:VariablesPanel Grid.Column="3" />
@@ -114,21 +121,23 @@
                 FirstTargetOrder="3" 
                 SecondTargetOrder="6" 
                 MinTargetSize="200" 
-                Orientation="Vertical"/>
-            <common:ShowHideButtonControl Grid.Column="5" Command="{Binding toggleHideVariablesCommand}"/>
+                Orientation="Vertical"
+                Style="{StaticResource TargetedGridSplitterStyle}"/>
+            <common:ShowHideButtonControl Grid.Column="5" Command="{Binding toggleHideVariablesCommand}" Orientation="Vertical" Direction="Right"/>
 
             <!-- WORKING AREA -->
-            <local:MainArea Grid.Column="6"/>
+            <local:EditorPanel Grid.Column="6"/>
 
             <!-- DLG FILES -->
-            <common:ShowHideButtonControl Grid.Column="7" Command="{Binding toggleHideDlgFilesCommand}"/>
+            <common:ShowHideButtonControl Grid.Column="7" Command="{Binding toggleHideDlgFilesCommand}" Orientation="Vertical" Direction="Left"/>
             <common:TargetedGridSplitter 
                 Grid.Column="8" 
                 Width="5" 
                 FirstTargetOrder="6" 
                 SecondTargetOrder="9" 
                 MinTargetSize="200" 
-                Orientation="Vertical"/>
+                Orientation="Vertical"
+                Style="{StaticResource TargetedGridSplitterStyle}"/>
             <local:DialogueFilesPanel Grid.Column="9"/>
 
         </Grid>

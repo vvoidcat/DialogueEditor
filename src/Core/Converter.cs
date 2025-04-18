@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DialogueEditor.Core
+namespace DialogueEditor.Core;
+
+internal class Converter : IConverter
 {
-    internal class Converter : IConverter
+    // processes single option
+    public R ProcessOption<T, R>(T option)
     {
-        // processes single option
-        public R ProcessOption<T, R>(T option)
-        {
-            //placeholder
-            return Activator.CreateInstance<R>();
-        }
+        //placeholder
+        return Activator.CreateInstance<R>();
     }
 }
