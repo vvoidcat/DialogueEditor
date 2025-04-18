@@ -44,7 +44,10 @@
                         </Style>
                     </ColumnDefinition.Style>
                 </ColumnDefinition>
-
+                
+                <!-- CONFIGS SPLITTER -->
+                <ColumnDefinition Width="3"/>
+                
                 <!-- CONFIGS TOGGLE -->
                 <ColumnDefinition Width="20"/>
 
@@ -62,6 +65,9 @@
                     </ColumnDefinition.Style>
                 </ColumnDefinition>
                 
+                <!-- VARIABLES SPLITTER -->
+                <ColumnDefinition Width="3"/>
+
                 <!-- VARIABLES TOGGLE -->
                 <ColumnDefinition Width="20"/>
 
@@ -91,19 +97,39 @@
 
             <!-- PRESET CONFIGURATIONS -->
             <local:ConfigurationsPanel Grid.Column="0"/>
-            <common:ShowHideButtonControl Grid.Column="1" Command="{Binding toggleHideConfigsCommand}"/>
+            <common:TargetedGridSplitter 
+                Grid.Column="1" 
+                Width="5" 
+                FirstTargetOrder="0" 
+                SecondTargetOrder="6" 
+                MinTargetSize="200" 
+                Orientation="Vertical"/>
+            <common:ShowHideButtonControl Grid.Column="2" Command="{Binding toggleHideConfigsCommand}"/>
 
             <!-- GLOBAL VARIABLES -->
-            <local:VariablesPanel Grid.Column="2" />
-            <common:ShowHideButtonControl Grid.Column="3" Command="{Binding toggleHideVariablesCommand}"/>
+            <local:VariablesPanel Grid.Column="3" />
+            <common:TargetedGridSplitter 
+                Grid.Column="4" 
+                Width="5" 
+                FirstTargetOrder="3" 
+                SecondTargetOrder="6" 
+                MinTargetSize="200" 
+                Orientation="Vertical"/>
+            <common:ShowHideButtonControl Grid.Column="5" Command="{Binding toggleHideVariablesCommand}"/>
 
             <!-- WORKING AREA -->
-            <local:MainArea Grid.Column="4"/>
+            <local:MainArea Grid.Column="6"/>
 
             <!-- DLG FILES -->
-            <common:ShowHideButtonControl Grid.Column="5" Command="{Binding toggleHideDlgFilesCommand}"/>
-            <common:TargetedGridSplitter Grid.Column="6" Width="5" FirstTargetColumn="4" SecondTargetColumn="7" MinColumnWidth="{Binding MinResizeWidth}"/>
-            <local:DialogueFilesPanel Grid.Column="7"/>
+            <common:ShowHideButtonControl Grid.Column="7" Command="{Binding toggleHideDlgFilesCommand}"/>
+            <common:TargetedGridSplitter 
+                Grid.Column="8" 
+                Width="5" 
+                FirstTargetOrder="6" 
+                SecondTargetOrder="9" 
+                MinTargetSize="200" 
+                Orientation="Vertical"/>
+            <local:DialogueFilesPanel Grid.Column="9"/>
 
         </Grid>
         

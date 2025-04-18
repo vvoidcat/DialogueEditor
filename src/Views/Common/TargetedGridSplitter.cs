@@ -1,120 +1,177 @@
 ﻿using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Automation;
 
 namespace DialogueEditor.Views.Common;
 
-public class TargetedGridSplitter : GridSplitter, IDisposable
+public class TargetedGridSplitter : Thumb, IDisposable
 {
-    //private List<ColumnDefinition> _lockedColumns = new();
-    //private Dictionary<int, (GridLength, GridUnitType)> _lockedColumns = new();
-    //private Dictionary<int, (GridLength, GridUnitType)> _workingColums = new();
-    //private Dictionary<int, GridUnitType> _lockedColumns = new();
+    private ColumnDefinition? _col1;
+    private ColumnDefinition? _col2;
 
-    ColumnDefinition? col1;
-    ColumnDefinition? col2;
+    private RowDefinition? _row1;
+    private RowDefinition? _row2;
 
-    public static readonly DependencyProperty FirstTargetColumnProperty =
+    public static readonly DependencyProperty OrientationProperty =
         DependencyProperty.Register(
-            "FirstTargetColumn",
+            "Orientation",
+            typeof(OrientationType),
+            typeof(TargetedGridSplitter),
+            new PropertyMetadata(OrientationType.Vertical));
+
+    public static readonly DependencyProperty FirstTargetOrderProperty =
+        DependencyProperty.Register(
+            "FirstTargetOrder",
             typeof(int),
             typeof(TargetedGridSplitter),
             new PropertyMetadata(0));
 
-    public static readonly DependencyProperty SecondTargetColumnProperty =
+    public static readonly DependencyProperty SecondTargetOrderProperty =
         DependencyProperty.Register(
-            "SecondTargetColumn",
+            "SecondTargetOrder",
             typeof(int),
             typeof(TargetedGridSplitter),
             new PropertyMetadata(1));
 
-    public static readonly DependencyProperty MinColumnWidthProperty =
+    public static readonly DependencyProperty MinTargetSizeProperty =
         DependencyProperty.Register(
-            "MinColumnWidth",
+            "MinTargetSize",
             typeof(int),
             typeof(TargetedGridSplitter),
             new PropertyMetadata(0));
 
-    public int FirstTargetColumn
+    public OrientationType Orientation
     {
-        get => (int)GetValue(FirstTargetColumnProperty);
-        set => SetValue(FirstTargetColumnProperty, value);
+        get => (OrientationType)GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
     }
 
-    public int SecondTargetColumn
+    public int FirstTargetOrder
     {
-        get => (int)GetValue(SecondTargetColumnProperty);
-        set => SetValue(SecondTargetColumnProperty, value);
+        get => (int)GetValue(FirstTargetOrderProperty);
+        set => SetValue(FirstTargetOrderProperty, value);
     }
 
-    public int MinColumnWidth
+    public int SecondTargetOrder
     {
-        get => (int)GetValue(MinColumnWidthProperty);
-        set => SetValue(MinColumnWidthProperty, value);
+        get => (int)GetValue(SecondTargetOrderProperty);
+        set => SetValue(SecondTargetOrderProperty, value);
+    }
+
+    public int MinTargetSize
+    {
+        get => (int)GetValue(MinTargetSizeProperty);
+        set => SetValue(MinTargetSizeProperty, value);
     }
 
     public TargetedGridSplitter()
     {
+        // MOVE TO STYLES DICTIONARY
+        var borderFactory = new FrameworkElementFactory(typeof(Border));
+        borderFactory.SetValue(Border.BackgroundProperty, Brushes.WhiteSmoke);
+        borderFactory.SetValue(Border.BorderBrushProperty, Brushes.WhiteSmoke);
+        borderFactory.SetValue(Border.BorderThicknessProperty, new Thickness(0));
+
+        this.Template = new ControlTemplate(typeof(Thumb))
+        {
+            VisualTree = borderFactory
+        };
+
+
+        // ALSO MOVE TO STYLES
+        switch (Orientation)
+        {
+            case OrientationType.None:
+            case OrientationType.Vertical:
+                this.Cursor = Cursors.SizeWE;
+                break;
+            case OrientationType.Horizontal:
+                this.Cursor = Cursors.SizeNS;
+                break;
+        }
+
         this.DragStarted += OnDragStarted;
         this.DragDelta += OnDragDelta;
-        this.DragCompleted += OnDragCompleted;
     }
 
     private void OnDragStarted(object sender, DragStartedEventArgs e)
     {
         if (Parent is Grid grid)
         {
-            col1 = grid.ColumnDefinitions[FirstTargetColumn];
-            col2 = grid.ColumnDefinitions[SecondTargetColumn];
+            if (Orientation == OrientationType.Vertical)
+            {
+                var cols = grid.ColumnDefinitions;
+
+                if (FirstTargetOrder >= 0 && FirstTargetOrder < cols.Count &&
+                    SecondTargetOrder >= 0 && SecondTargetOrder < cols.Count)
+                {
+                    _col1 = cols[FirstTargetOrder];
+                    _col2 = cols[SecondTargetOrder];
+                }
+            }
+            if (Orientation == OrientationType.Horizontal)
+            {
+                var rows = grid.RowDefinitions;
+
+                if (FirstTargetOrder >= 0 && FirstTargetOrder < rows.Count &&
+                    SecondTargetOrder >= 0 && SecondTargetOrder < rows.Count)
+                {
+                    _row1 = rows[FirstTargetOrder];
+                    _row2 = rows[SecondTargetOrder];
+                }
+            }
         }
     }
 
     private void OnDragDelta(object sender, DragDeltaEventArgs e)
     {
-        if (col1 is null || col2 is null)
-            return;
-
-        double delta = e.HorizontalChange;
-
-        // Calculate new widths
-        double newWidthCol1 = col1.ActualWidth + delta;
-        double newWidthCol2 = col2.ActualWidth - delta;
-
-        // Enforce minimum widths
-
-        if (newWidthCol1 < MinColumnWidth)
+        if (Orientation == OrientationType.Vertical && _col1 is not null && _col2 is not null)
         {
-            newWidthCol1 = MinColumnWidth;
-            newWidthCol2 = col2.ActualWidth - MinColumnWidth - col1.ActualWidth;
+            var result = Drag(e.HorizontalChange, MinTargetSize, _col1.ActualWidth, _col2.ActualWidth);
+            _col1.Width = new GridLength(result.Item1, _col1.Width.GridUnitType);
+            _col2.Width = new GridLength(result.Item2, _col2.Width.GridUnitType);
         }
-        else if (newWidthCol2 < MinColumnWidth)
+        if (Orientation == OrientationType.Horizontal && _row1 is not null && _row2 is not null)
         {
-            newWidthCol1 = col1.ActualWidth + col2.ActualWidth - MinColumnWidth;
-            newWidthCol2 = MinColumnWidth;
+            var result = Drag(e.VerticalChange, MinTargetSize, _row1.ActualHeight, _row2.ActualHeight);
+            _row1.Height = new GridLength(result.Item1, _row1.Height.GridUnitType);
+            _row2.Height = new GridLength(result.Item2, _row2.Height.GridUnitType);
         }
-
-        // Apply constrained widths
-        col1.Width = new GridLength(newWidthCol1, GridUnitType.Pixel);
-        col2.Width = new GridLength(newWidthCol2, GridUnitType.Pixel);
-
-        // Lock other columns
-        //foreach (var kvp in _lockedColumns)
-        //{
-        //    columns[kvp.Key].Width = kvp.Value.Item1;
-        //}
     }
 
-    private void OnDragCompleted(object sender, DragCompletedEventArgs e)
+    private (double, double) Drag
+    (
+        double delta, 
+        double minValue, 
+        double originalValue1, 
+        double originalValue2
+    )
     {
-        //_lockedColumns.Clear(); // Clean up
+        // Calculate new values
+        double newValue1 = originalValue1 + delta;
+        double newValue2 = originalValue2 - delta;
 
+        // Enforce minimum values
+        if (newValue1 < minValue)
+        {
+            newValue1 = minValue;
+            newValue2 = originalValue1 + originalValue2 - minValue;
+        }
+        else if (newValue2 < minValue)
+        {
+            newValue2 = minValue;
+            newValue1 = originalValue1 + originalValue2 - minValue;
+        }
+
+        return (newValue1, newValue2);
     }
-
 
     void IDisposable.Dispose()
     {
         this.DragStarted -= OnDragStarted;
         this.DragDelta -= OnDragDelta;
-        this.DragCompleted -= OnDragCompleted; 
     }
 }

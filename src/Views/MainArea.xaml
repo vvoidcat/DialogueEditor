@@ -16,9 +16,11 @@
 
     <TabControl BorderBrush="#FFD7E3E9">
         <TabItem Header="TabItem" BorderBrush="#FFD7E3E9">
-            <Grid Background="#FFEBEBEB">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="3"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -27,7 +29,7 @@
                     BorderBrush="#FFD7E3E9" 
                     Background="#FFF0F0F0" 
                     ItemsSource="{Binding nodes}">
-                    
+
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding DisplayName}"/>
@@ -40,19 +42,21 @@
                         </TreeViewItem>
                         <TreeViewItem Header="child2"></TreeViewItem>
                         <TreeViewItem Header="child3"></TreeViewItem>
-                    </TreeViewItem>/>
+                    </TreeViewItem> />
                 </TreeView>
 
-                <Grid Grid.Row="1" Background="White">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <common:ShowHideButtonControl Grid.Row="1" Command="{Binding toggleHideNodeSettingsCommand}"/>
 
-                    <common:ShowHideButtonControl Grid.Row="0" Command="{Binding toggleHideNodeSettingsCommand}"/>
-
-                    <GroupBox Grid.Row="1" Header="Node Settings" />
-                </Grid>
+                <common:TargetedGridSplitter 
+                    Grid.Row="2" 
+                    Height="3" 
+                    FirstTargetOrder="0" 
+                    SecondTargetOrder="3" 
+                    MinTargetSize="200" 
+                    Orientation="Horizontal"/>
+                
+                <GroupBox Grid.Row="3" Header="Node Settings" />
+                
             </Grid>
         </TabItem>
     </TabControl>
