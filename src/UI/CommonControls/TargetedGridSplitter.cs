@@ -81,7 +81,7 @@ public class TargetedGridSplitter : Thumb, IDisposable
 
     private void OnDragStarted(object sender, DragStartedEventArgs e)
     {
-        if (Parent is Grid grid)
+        if (Parent is Grid grid && IsEnabled)
         {
             if (Orientation == OrientationType.Vertical)
             {
@@ -110,17 +110,20 @@ public class TargetedGridSplitter : Thumb, IDisposable
 
     private void OnDragDelta(object sender, DragDeltaEventArgs e)
     {
-        if (Orientation == OrientationType.Vertical && _col1 is not null && _col2 is not null)
+        if (IsEnabled)
         {
-            var result = Drag(e.HorizontalChange, MinTargetSize, _col1.ActualWidth, _col2.ActualWidth);
-            _col1.Width = new GridLength(result.Item1, _col1.Width.GridUnitType);
-            _col2.Width = new GridLength(result.Item2, _col2.Width.GridUnitType);
-        }
-        if (Orientation == OrientationType.Horizontal && _row1 is not null && _row2 is not null)
-        {
-            var result = Drag(e.VerticalChange, MinTargetSize, _row1.ActualHeight, _row2.ActualHeight);
-            _row1.Height = new GridLength(result.Item1, _row1.Height.GridUnitType);
-            _row2.Height = new GridLength(result.Item2, _row2.Height.GridUnitType);
+            if (Orientation == OrientationType.Vertical && _col1 is not null && _col2 is not null)
+            {
+                var result = Drag(e.HorizontalChange, MinTargetSize, _col1.ActualWidth, _col2.ActualWidth);
+                _col1.Width = new GridLength(result.Item1, _col1.Width.GridUnitType);
+                _col2.Width = new GridLength(result.Item2, _col2.Width.GridUnitType);
+            }
+            if (Orientation == OrientationType.Horizontal && _row1 is not null && _row2 is not null)
+            {
+                var result = Drag(e.VerticalChange, MinTargetSize, _row1.ActualHeight, _row2.ActualHeight);
+                _row1.Height = new GridLength(result.Item1, _row1.Height.GridUnitType);
+                _row2.Height = new GridLength(result.Item2, _row2.Height.GridUnitType);
+            }
         }
     }
 

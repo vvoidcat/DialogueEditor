@@ -14,7 +14,7 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
-        <TextBox Grid.Column="0" MinWidth="100" Height="20"/>
-        <Button Grid.Column="1" Width="20" Height="20" Content="..."/>
+        <TextBox Grid.Column="0" MinWidth="100" Height="20" Style="{StaticResource TextBoxStyle}"/>
+        <Button Grid.Column="1" Width="20" Height="20" Content="..." Style="{StaticResource ButtonStyle}"/>
     </Grid>
 </UserControl>

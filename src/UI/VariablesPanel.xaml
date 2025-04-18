@@ -21,10 +21,10 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0" MinWidth="100" Height="20" Text="search..."/>
+                <TextBox Grid.Column="0" MinWidth="100" Height="20" Text="search..." Style="{StaticResource TextBoxStyle}"/>
             </Grid>
 
-            <Button Content="New Variable" Margin="5"/>
+            <Button Content="New Variable" Margin="5" Style="{StaticResource ButtonStyle}"/>
 
             <ListBox BorderThickness="0">
                 <TextBox Text="Name String Value" Height="50"/>

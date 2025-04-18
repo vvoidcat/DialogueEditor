@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DialogueEditor.Views"
         xmlns:common="clr-namespace:DialogueEditor.UI.CommonControls"
+        xmlns:converters="clr-namespace:DialogueEditor.UI.Converters"
         xmlns:controllers="clr-namespace:DialogueEditor.Controllers"
         mc:Ignorable="d"
         Title="DialogueEditor" MinHeight="500" MinWidth="1000">
@@ -13,6 +14,9 @@
         <controllers:MainWindowViewModel/>
     </Window.DataContext>
 
+    <Window.Resources>
+        <converters:VisibilityToGridLengthConverter x:Key="VisibilityToGridLengthConverter" DefaultSize="200"/>
+    </Window.Resources>
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -32,19 +36,13 @@
             <Grid.ColumnDefinitions>
                 
                 <!-- CONFIGS -->
-                <ColumnDefinition x:Name="ConfigsColumn">
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="200" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding isVisibleConfigsPanel}" Value="False">
-                                    <Setter Property="Width" Value="0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-                
+                <ColumnDefinition 
+                    x:Name="ConfigsCol" 
+                    Width="{Binding IsVisibleConfigsPanel, 
+                            Mode=TwoWay, 
+                            Converter={StaticResource VisibilityToGridLengthConverter}, 
+                            ConverterParameter=ConfigsCol}"/>
+
                 <!-- CONFIGS SPLITTER -->
                 <ColumnDefinition Width="3"/>
                 
@@ -52,19 +50,13 @@
                 <ColumnDefinition Width="20"/>
 
                 <!-- VARIABLES -->
-                <ColumnDefinition x:Name="VariablesColumn">    
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="200" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding isVisibleVariablesPanel}" Value="False">
-                                    <Setter Property="Width" Value="0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-                
+                <ColumnDefinition 
+                    x:Name="VariablesCol" 
+                    Width="{Binding IsVisibleVariablesPanel, 
+                            Mode=TwoWay, 
+                            Converter={StaticResource VisibilityToGridLengthConverter}, 
+                            ConverterParameter=VariablesCol}"/>
+
                 <!-- VARIABLES SPLITTER -->
                 <ColumnDefinition Width="3"/>
 
@@ -81,19 +73,14 @@
                 <ColumnDefinition Width="3"/>
 
                 <!-- DLG FILES -->
-                <ColumnDefinition x:Name="DlgFilesColumn">    
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="200" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding isVisibleDlgFilesPanel}" Value="False">
-                                    <Setter Property="Width" Value="0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
+                <ColumnDefinition 
+                    x:Name="DlgsCol" 
+                    Width="{Binding IsVisibleDlgFilesPanel, 
+                            Mode=TwoWay, 
+                            Converter={StaticResource VisibilityToGridLengthConverter}, 
+                            ConverterParameter=DlgsCol}"/>
             </Grid.ColumnDefinitions>
+            
             
             <!-- 
             
@@ -110,11 +97,19 @@
                 SecondTargetOrder="6" 
                 MinTargetSize="200" 
                 Orientation="Vertical"
-                Style="{StaticResource TargetedGridSplitterStyle}"/>
-            <common:ShowHideButtonControl Grid.Column="2" Command="{Binding toggleHideConfigsCommand}" Orientation="Vertical" Direction="Right"/>
+                Style="{StaticResource TargetedGridSplitterStyle}"
+                IsEnabled="{Binding IsVisibleConfigsPanel}"/>
+            
+            <common:ShowHideButtonControl 
+                Grid.Column="2" 
+                Command="{Binding toggleHideConfigsCommand}" 
+                Orientation="Vertical" 
+                Direction="Right"
+                IsOpen="{Binding IsVisibleConfigsPanel}"/>
 
             <!-- GLOBAL VARIABLES -->
             <local:VariablesPanel Grid.Column="3" />
+            
             <common:TargetedGridSplitter 
                 Grid.Column="4" 
                 Width="5" 
@@ -122,14 +117,27 @@
                 SecondTargetOrder="6" 
                 MinTargetSize="200" 
                 Orientation="Vertical"
-                Style="{StaticResource TargetedGridSplitterStyle}"/>
-            <common:ShowHideButtonControl Grid.Column="5" Command="{Binding toggleHideVariablesCommand}" Orientation="Vertical" Direction="Right"/>
+                Style="{StaticResource TargetedGridSplitterStyle}"
+                IsEnabled="{Binding IsVisibleVariablesPanel}"/>
+            
+            <common:ShowHideButtonControl 
+                Grid.Column="5" 
+                Command="{Binding toggleHideVariablesCommand}" 
+                Orientation="Vertical" 
+                Direction="Right"
+                IsOpen="{Binding IsVisibleVariablesPanel}"/>
 
             <!-- WORKING AREA -->
             <local:EditorPanel Grid.Column="6"/>
 
             <!-- DLG FILES -->
-            <common:ShowHideButtonControl Grid.Column="7" Command="{Binding toggleHideDlgFilesCommand}" Orientation="Vertical" Direction="Left"/>
+            <common:ShowHideButtonControl 
+                Grid.Column="7" 
+                Command="{Binding toggleHideDlgFilesCommand}" 
+                Orientation="Vertical" 
+                Direction="Left"
+                IsOpen="{Binding IsVisibleDlgFilesPanel}"/>
+            
             <common:TargetedGridSplitter 
                 Grid.Column="8" 
                 Width="5" 
@@ -137,7 +145,9 @@
                 SecondTargetOrder="9" 
                 MinTargetSize="200" 
                 Orientation="Vertical"
-                Style="{StaticResource TargetedGridSplitterStyle}"/>
+                Style="{StaticResource TargetedGridSplitterStyle}"
+                IsEnabled="{Binding IsVisibleDlgFilesPanel}"/>
+            
             <local:DialogueFilesPanel Grid.Column="9"/>
 
         </Grid>

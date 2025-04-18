@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DialogueEditor.Views"
              xmlns:common="clr-namespace:DialogueEditor.UI.CommonControls"
+             xmlns:converters="clr-namespace:DialogueEditor.UI.Converters"
              xmlns:controllers="clr-namespace:DialogueEditor.Controllers"
              x:Name="EditorPanelRoot"
              mc:Ignorable="d" 
@@ -14,14 +15,23 @@
         <controllers:EditorPanelViewModel/>
     </UserControl.DataContext>
 
-    <TabControl BorderBrush="#FFD7E3E9">
-        <TabItem Header="TabItem" BorderBrush="#FFD7E3E9">
+    <UserControl.Resources>
+        <converters:VisibilityToGridLengthConverter x:Key="VisibilityToGridLengthConverter" DefaultSize="200"/>
+    </UserControl.Resources>
+
+    <TabControl BorderBrush="#FFD7E3E9" BorderThickness="0">
+        <TabItem Header="TabItem" BorderBrush="#FFD7E3E9" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="3"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition 
+                        x:Name="SettingsRow" 
+                        Height="{Binding IsVisibleNodeSettingsPanel, 
+                                Mode=TwoWay, 
+                                Converter={StaticResource VisibilityToGridLengthConverter}, 
+                                ConverterParameter=SettingsRow}"/>
                 </Grid.RowDefinitions>
 
                 <TreeView 
@@ -47,7 +57,7 @@
                     Command="{Binding toggleHideNodeSettingsCommand}" 
                     Orientation="Horizontal" 
                     Direction="Up"
-                    />
+                    IsOpen="{Binding IsVisibleNodeSettingsPanel}"/>
 
                 <common:TargetedGridSplitter 
                     Grid.Row="2" 
@@ -57,7 +67,7 @@
                     MinTargetSize="200" 
                     Orientation="Horizontal"
                     Style="{StaticResource TargetedGridSplitterStyle}"
-                    IsEnabled="False"/>
+                    IsEnabled="{Binding IsVisibleNodeSettingsPanel}"/>
                 
                 <GroupBox Grid.Row="3" Header="Node Settings" />
                 

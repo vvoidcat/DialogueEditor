@@ -36,8 +36,6 @@ namespace DialogueEditor.Controllers.Common
             {
                 _exec.Invoke();
             }
-
-            throw new ArgumentException($"{nameof(parameter)} is null");
         }
 
         private void OnCanExecuteChanged()

@@ -4,9 +4,11 @@
     <ResourceDictionary.MergedDictionaries>
 
         <!-- Styles -->
+        <ResourceDictionary Source="/UI/Resources/Styles/ButtonStyle.xaml"/>
         <ResourceDictionary Source="/UI/Resources/Styles/ShowHideButtonStyle.xaml"/>
         <ResourceDictionary Source="/UI/Resources/Styles/TreeViewItemStyle.xaml"/>
         <ResourceDictionary Source="/UI/Resources/Styles/TargetedGridSplitterStyle.xaml"/>
+        <ResourceDictionary Source="/UI/Resources/Styles/TextBoxStyle.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>
     

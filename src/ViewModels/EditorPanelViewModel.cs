@@ -29,29 +29,10 @@ class EditorPanelViewModel : ObservableObject
         }
     }
 
-    public bool IsSplitterEnabled => !IsVisibleNodeSettingsPanel;
-
-    //private double _lastNodeSettingsHeight;
-    //public double LastNodeSettingsHeight
-    //{
-    //    get => _lastNodeSettingsHeight;
-    //    set
-    //    {
-    //        if (_lastNodeSettingsHeight != value)
-    //        {
-    //            _lastNodeSettingsHeight = value;
-    //            OnPropertyChanged();
-    //        }
-    //    }
-    //}
-
     public ICommand toggleHideNodeSettingsCommand => new RelayCommand<object>(() => IsVisibleNodeSettingsPanel = !IsVisibleNodeSettingsPanel);
 
     public EditorPanelViewModel()
     {
-        //IsVisibleNodeSettingsPanel = false;
-        //LastNodeSettingsHeight = 0;
-
         Nodes = new ObservableCollection<DialogueNode>()
         {
             new DialogueNode()
@@ -61,11 +42,11 @@ class EditorPanelViewModel : ObservableObject
                 Children = new ObservableCollection<DialogueNode>
                 {
                     new DialogueNode() { 
-                        DisplayName = "Child Node", 
+                        DisplayName = "Npc Node", 
                         Children = new ObservableCollection<DialogueNode>() { 
-                            new DialogueNode() { IsPlayer = true, DisplayName = "GrandchildNode" },
+                            new DialogueNode() { IsPlayer = true, DisplayName = "PlayerNode" },
                             new DialogueNode() { IsPlayer = true, IsLink = true, DisplayName = "Link node" } } },
-                    new DialogueNode() { DisplayName = "Child Node2" },
+                    new DialogueNode() { DisplayName = "Npc Node2" },
                 }
             }
         };

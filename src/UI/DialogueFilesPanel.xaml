@@ -18,7 +18,7 @@
         <StackPanel Margin="2">
             <common:FileSearchControl/>
 
-            <Button Content="New Dialogue" Margin="5"/>
+            <Button Content="New Dialogue" Margin="5" Style="{StaticResource ButtonStyle}"/>
 
             <ListBox BorderThickness="0">
                 <Label Content="Dlg1"/>
