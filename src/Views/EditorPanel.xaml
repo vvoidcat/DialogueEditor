@@ -1,4 +1,4 @@
-﻿<common:DisposableUserControl x:Class="DialogueEditor.Views.EditorPanel"
+<common:DisposableUserControl x:Class="DialogueEditor.Views.EditorPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,15 +7,11 @@
              xmlns:common="clr-namespace:DialogueEditor.Views.CommonControls"
              xmlns:converters="clr-namespace:DialogueEditor.Views.Converters"
              xmlns:viewModels="clr-namespace:DialogueEditor.ViewModels"
-             xmlns:modelWrappers="clr-namespace:DialogueEditor.ViewModels.ModelWrappers"
              x:Name="EditorPanelRoot"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:EditorViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800"
              Background="{DynamicResource AccentLightBrush}">
-
-    <common:DisposableUserControl.DataContext>
-        <viewModels:EditorPanelViewModel/>
-    </common:DisposableUserControl.DataContext>
 
     <common:DisposableUserControl.Resources>
         <converters:BoolToGridLengthConverter x:Key="BoolToGridLengthConverter" DefaultSize="200"/>
@@ -26,11 +22,12 @@
                 BorderThickness="0"
                 BorderBrush="{DynamicResource BordersBrush}"
                 Background="{DynamicResource BackgroundSecondaryBrush}" 
-                ItemsSource="{Binding OpenDialogues}">
+                ItemsSource="{Binding OpenDialogues}"
+                SelectedItem="{Binding ActiveDialogue, Mode=TwoWay}">
 
         <TabControl.ItemContainerStyle>
             <Style TargetType="TabItem" BasedOn="{StaticResource TabItemEditorStyle}">
-                <Setter Property="Header" Value="{Binding Name}"/>
+                <Setter Property="Header" Value="{Binding DisplayName}"/>
             </Style>
         </TabControl.ItemContainerStyle>
 

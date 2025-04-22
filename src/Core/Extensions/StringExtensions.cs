@@ -1,4 +1,4 @@
-namespace DialogueEditor.Extensions;
+namespace DialogueEditor.Core.Extensions;
 
 public static class StringExtensions
 {

@@ -1,7 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="GroupBoxStyle" TargetType="{x:Type GroupBox}">
+    <Style x:Key="GroupBoxStyle" TargetType="GroupBox">
         <Setter Property="BorderBrush" Value="{DynamicResource BordersBrush}"/>
         <Setter Property="Background" Value="{DynamicResource BackgroundPrimaryBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>

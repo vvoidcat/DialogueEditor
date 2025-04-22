@@ -56,3 +56,4 @@ nunit-*.xml
 .vs/
 TODO.md
 *csproj.user
+test_files/

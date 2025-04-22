@@ -1,19 +1,20 @@
 using System.Collections.ObjectModel;
-using DialogueEditor.Extensions;
-using DialogueEditor.Models;
+using DialogueEditor.Core.Extensions;
+using DialogueEditor.Core.Models;
 using DialogueEditor.ViewModels.Common;
 
 namespace DialogueEditor.ViewModels.ModelWrappers;
 
-public class DialogueNodeViewModel : ObservableObject
+public class DialogueNodeWrapper : ObservableObject
 {
 	private readonly DialogueNode _model;
+	public DialogueNode Model => _model;
 
 	#region Model Properties
 
 	public bool IsRoot => _model.IsRoot;
-	public bool IsPlayer => _model.IsPlayer;
-	public bool IsLink => _model.IsLink;
+	public bool IsPlayer => _model.NodeType == NodeType.Player;
+	public bool IsLink => _model.LinkTo is not null;
 
 	private string? _text;
 	public string? Text
@@ -41,18 +42,14 @@ public class DialogueNodeViewModel : ObservableObject
 		}
 	}
 
-	public ObservableCollection<DialogueNodeViewModel> Children
+	private ObservableCollection<DialogueNodeWrapper> _children = new();
+	public ObservableCollection<DialogueNodeWrapper> Children
 	{
-		get
+		get => _children;
+		set
 		{
-			var result = new ObservableCollection<DialogueNodeViewModel>();
-
-			foreach (var child in _model.Children)
-			{
-				result.Add(new DialogueNodeViewModel(child));
-			}
-
-			return result;
+			_children = value;
+			OnPropertyChanged(nameof(Children));
 		}
 	}
 
@@ -66,12 +63,13 @@ public class DialogueNodeViewModel : ObservableObject
 		//    $"[{_model.ContentSettings.SpeakerTag}] {_model.ContentSettings.Text.TruncateAndAdd(200, "...")}";
 
 		// should be direct and depend on saved changes
-		get => _model.ContentSettings is null ? "+" : IsRoot ? "ROOT" :
-			$"[{SpeakerTag}] {Text.TruncateAndAdd(200, "...")}";
+		get => _model.ContentSettings is null ? "+" : IsRoot ? "[ROOT]" :
+			(string.IsNullOrWhiteSpace(SpeakerTag) ? "" : $"[{SpeakerTag}] ") +
+			(string.IsNullOrWhiteSpace(Text) ? "[CONTINUE...]" : $"{Text.TruncateAndAdd(200, "...")}");
 	}
 
-	public delegate void DialogueNodeSelectedHandler(object item);
-	public static event DialogueNodeSelectedHandler OnIsSelectedChanged = delegate { };
+	public delegate void DialogueNodeSelectedHandler(DialogueNodeWrapper? item);
+	public event DialogueNodeSelectedHandler OnIsSelectedChanged = delegate { };
 
 	private bool _isSelectedNode;
 	public bool IsSelectedNode
@@ -88,11 +86,29 @@ public class DialogueNodeViewModel : ObservableObject
 
 	#endregion
 
-	public DialogueNodeViewModel(DialogueNode model)
+	#region Constructors
+
+	public DialogueNodeWrapper(DialogueNode model)
 	{
 		_model = model;
+
+		Children = new ObservableCollection<DialogueNodeWrapper>(BuildChildren(model));
 
 		Text = model.ContentSettings.Text;
 		SpeakerTag = model.ContentSettings.SpeakerTag;
 	}
+
+	#endregion
+
+	#region Private Methods
+
+	private IEnumerable<DialogueNodeWrapper> BuildChildren(DialogueNode node)
+	{
+		foreach (var child in node.Children)
+		{
+			yield return new DialogueNodeWrapper((DialogueNode)child);
+		}
+	}
+
+	#endregion
 }

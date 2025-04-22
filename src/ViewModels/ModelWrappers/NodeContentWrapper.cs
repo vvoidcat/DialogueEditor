@@ -1,9 +1,9 @@
-using DialogueEditor.Models;
+using DialogueEditor.Core.Models;
 using DialogueEditor.ViewModels.Common;
 
 namespace DialogueEditor.ViewModels.ModelWrappers;
 
-public class NodeContentSettingsViewModel : ObservableObject
+public class NodeContentWrapper : ObservableObject
 {
 	//private string? _text;
 	//public string? Text

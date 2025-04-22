@@ -1,46 +1,44 @@
 using System.Windows.Input;
 
-namespace DialogueEditor.ViewModels.Common
+namespace DialogueEditor.ViewModels.Common;
+
+public class RelayCommand<T> : ICommand
 {
+	private readonly Action? _exec;
+	private readonly Action<T>? _execWithParam;
 
-	public class RelayCommand<T> : ICommand
+	public event EventHandler? CanExecuteChanged;
+
+	public RelayCommand(Action<T> action)
 	{
-		private readonly Action? _exec;
-		private readonly Action<T>? _execWithParam;
+		_execWithParam = action;
+	}
 
-		public event EventHandler? CanExecuteChanged;
+	public RelayCommand(Action action)
+	{
+		_exec = action;
+	}
 
-		public RelayCommand(Action<T> action)
+	public bool CanExecute(object? parameter)
+	{
+		return true;
+	}
+
+	public void Execute(object? parameter)
+	{
+		if (_execWithParam is not null && parameter is not null)
 		{
-			_execWithParam = action;
+			_execWithParam.Invoke((T)parameter);
 		}
 
-		public RelayCommand(Action action)
+		if (_exec is not null)
 		{
-			_exec = action;
+			_exec.Invoke();
 		}
+	}
 
-		public bool CanExecute(object? parameter)
-		{
-			return true;
-		}
-
-		public void Execute(object? parameter)
-		{
-			if (_execWithParam is not null && parameter is not null)
-			{
-				_execWithParam.Invoke((T)parameter);
-			}
-
-			if (_exec is not null)
-			{
-				_exec.Invoke();
-			}
-		}
-
-		private void OnCanExecuteChanged()
-		{
-			CanExecuteChanged?.Invoke(this, new EventArgs());
-		}
+	private void OnCanExecuteChanged()
+	{
+		CanExecuteChanged?.Invoke(this, new EventArgs());
 	}
 }

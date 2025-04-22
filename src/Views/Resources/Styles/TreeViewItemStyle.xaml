@@ -1,7 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="DialogueNodeItemStyle" TargetType="{x:Type TreeViewItem}">
+    <Style x:Key="DialogueNodeItemStyle" TargetType="TreeViewItem">
         <Setter Property="IsExpanded" Value="{Binding IsRoot, Mode=OneWay}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
 

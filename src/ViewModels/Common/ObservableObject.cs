@@ -1,29 +1,28 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace DialogueEditor.ViewModels.Common
+namespace DialogueEditor.ViewModels.Common;
+
+public class ObservableObject : INotifyPropertyChanged
 {
-	public class ObservableObject : INotifyPropertyChanged
+	public event PropertyChangedEventHandler? PropertyChanged;
+
+	protected bool SetProperty<T>(ref T oldValue, T newValue, string propertyName)
 	{
-		public event PropertyChangedEventHandler? PropertyChanged;
+		var valueChanged = false;
 
-		protected bool SetProperty<T>(ref T oldValue, T newValue, string propertyName)
+		if (!EqualityComparer<T>.Default.Equals(oldValue, newValue))
 		{
-			var valueChanged = false;
-
-			if (!EqualityComparer<T>.Default.Equals(oldValue, newValue))
-			{
-				oldValue = newValue;
-				OnPropertyChanged(propertyName);
-				valueChanged = true;
-			}
-
-			return valueChanged;
+			oldValue = newValue;
+			OnPropertyChanged(propertyName);
+			valueChanged = true;
 		}
 
-		protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+		return valueChanged;
+	}
+
+	protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+	{
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 }

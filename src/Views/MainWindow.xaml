@@ -1,4 +1,4 @@
-﻿<Window x:Class="DialogueEditor.Views.MainWindow"
+<Window x:Class="DialogueEditor.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,10 +10,6 @@
         mc:Ignorable="d"
         Title="DialogueEditor" MinHeight="800" MinWidth="1400"
         Background="{DynamicResource BackgroundSecondaryBrush}">
-
-    <Window.DataContext>
-        <viewModels:MainWindowViewModel/>
-    </Window.DataContext>
 
     <Window.Resources>
         <converters:BoolToGridLengthConverter x:Key="BoolToGridLengthConverter" DefaultSize="200"/>
@@ -45,9 +41,9 @@
                     <Label Height="30" Padding="0" Margin="8" Content="bla bla bla Config name / JSON" Foreground="{DynamicResource TextSecondaryBrush}"/>
                     <RadioButton Content="Dark Mode" Margin="8 8 8 0"/>
                     <StackPanel Grid.Column="2" Orientation="Horizontal">
-                        <Button Height="30" Width="45" Content="_" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-                        <Button Height="30" Width="45" Content="□" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-                        <Button Height="30" Width="45" Content="X" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+                        <Button Height="30" Width="45" Content="_" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding HideWindowCommand}"/>
+                        <Button Height="30" Width="45" Content="□" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding ResizeWindowCommand}"/>
+                        <Button Height="30" Width="45" Content="X" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding CloseAppCommand}"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -139,7 +135,7 @@
                 x:Name="ToggleConfigs"
                 Grid.Column="2" 
                 Header="Configurations"
-                Command="{Binding toggleHideConfigsCommand}" 
+                Command="{Binding ToggleHideConfigsCommand}" 
                 Orientation="Vertical" 
                 Direction="Right"
                 IsOpen="{Binding IsVisibleConfigsPanel}"/>
@@ -163,7 +159,7 @@
                 x:Name="ToggleVariables" 
                 Grid.Column="5" 
                 Header="Configuration Settings"
-                Command="{Binding toggleHideVariablesCommand}" 
+                Command="{Binding ToggleHideVariablesCommand}" 
                 Orientation="Vertical" 
                 Direction="Right"
                 IsOpen="{Binding IsVisibleVariablesPanel}"/>
@@ -176,7 +172,7 @@
                 x:Name="ToggleDlgs"
                 Grid.Column="7" 
                 Header="Dialogue Files"
-                Command="{Binding toggleHideDlgFilesCommand}" 
+                Command="{Binding ToggleHideDlgFilesCommand}" 
                 Orientation="Vertical" 
                 Direction="Left"
                 IsOpen="{Binding IsVisibleDlgFilesPanel}"/>

@@ -1,4 +1,4 @@
-namespace DialogueEditor.Models;
+namespace DialogueEditor.Core.Models;
 
 public enum VariableType
 {

@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DialogueEditor.Models;
+namespace DialogueEditor.Core.Models;
 
 public class NodeContentSettings : IEquatable<NodeContentSettings>
 {
@@ -19,16 +13,27 @@ public class NodeContentSettings : IEquatable<NodeContentSettings>
 		SpeakerTag = speakerTag;
 	}
 
+	#region Overrides
+
 	public override int GetHashCode()
-	=> base.GetHashCode();
+		=> base.GetHashCode();
 
 	public override bool Equals(object? obj)
 		=> Equals(obj as NodeContentSettings);
 
+	public static bool operator ==(NodeContentSettings? left, NodeContentSettings? right)
+		=> (left is null && right is null) || (left is not null && right is not null &&
+			left.Text == right.Text && left.SpeakerTag == right.SpeakerTag);
+
+	public static bool operator !=(NodeContentSettings? left, NodeContentSettings? right)
+		=> !(left == right);
+
+	#endregion
+
 	#region IEquatable
 
 	public bool Equals(NodeContentSettings? other)
-		=> other is not null && this.Text == other.Text && this.SpeakerTag == other.SpeakerTag;
+		=> this == other;
 
 	#endregion
 }
